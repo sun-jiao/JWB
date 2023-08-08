@@ -29,10 +29,10 @@ if (!window.JWB || JWB === false) {
     for (let lang of langs) {
         let file = lang.split('=')[1] || lang; // for multiple languages using the same files; useful for cases like Chinese (e.g. 'zh=zh_hans')
         lang = lang.split('=')[0];
-        JWB.imports.i18n[lang] = '//en.wikipedia.org/w/index.php?title=User:Joeytje50/JWB.js/i18n-' + file + '.js&action=raw&ctype=text/javascript';
+        JWB.imports.i18n[lang] = '//www.sunjiao.net/JWB/i18n/' + file + '.js';
     }
 })([ // List all languages here:
-    'nl', 'gl', 'ru', 'uk', 'be', 'he', 'it', 'fa', 'zh_hans', 'zh_hant',
+    'nl', 'gl', 'ru', 'uk', 'be', 'he', 'it', 'fa', 'zh_hans', 'zh_hant', 'vi',
     'zh=zh_hans', 'zh_cn=zh_hans', 'zh_my=zh_hans', 'zh_sg=zh_hans', // zh_hans redirects
     'zh_hk=zh_hant', 'zh_mo=zh_hant', 'zh_tw=zh_hant', // zh_hant redirects
 ]);

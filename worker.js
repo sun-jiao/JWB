@@ -6,10 +6,10 @@
  */
 
 JWB.worker.function = function () {
-    var ret = {};
+    const ret = {};
 
     function regexMatch(str, pattern, flags, callback) {
-        var re, result;
+        let re, result;
         try {
             re = new RegExp(pattern, flags);
             result = str.match(re);
@@ -23,7 +23,7 @@ JWB.worker.function = function () {
     ret.match = regexMatch;
 
     function regexReplace(str, pattern, flags, rWith, callback) {
-        var re, result;
+        let re, result;
         try {
             re = new RegExp(pattern, flags);
             result = str.replace(re, rWith);
@@ -40,16 +40,16 @@ JWB.worker.function = function () {
     //It excludes comments (<!-- -->), and nowiki, math, source, syntaxhighlight, pre, code, gallery and timeline tags)
     //Based on http://stackoverflow.com/a/23589204/1256925
     function unparsedReplace(str, pattern, flags, rWith, callback) {
-        var exclude = '(<!--[\\s\\S]*?-->|<(nowiki|math|source|syntaxhighlight|pre|gallery|timeline)[^>]*?>[\\s\\S]*?<\\/\\2>)';
+        const exclude = '(<!--[\\s\\S]*?-->|<(nowiki|math|source|syntaxhighlight|pre|gallery|timeline)[^>]*?>[\\s\\S]*?<\\/\\2>)';
         //add /i flag, to exclude the correct tags regardless of casing.
         //This won't matter for the actual replacing, as the specified flags are used there.
-        var replacements = 0;
-        var global = flags.indexOf('g') !== -1;
+        let replacements = 0;
+        const global = flags.indexOf('g') !== -1;
         // build regex with exclusion list.
         // This re will be case insensitive, but the actual replacement done will still be case sensitive if the 'i' flag is not given.
         // This re will also be executed globally on the string, but the separate tracker will only allow one replacement to be done if 'g' is not given.
         try {
-            var re = new RegExp(exclude + '|(' + pattern + ')', flags.replace(/i|$/, 'i').replace(/g|$/, 'g'));
+            const re = new RegExp(exclude + '|(' + pattern + ')', flags.replace(/i|$/, 'i').replace(/g|$/, 'g'));
             str = str.replace(re, function (match, g1, g2, g3) {
                 if (!global && replacements > 0) { // a replacement has already been made in non-global mode
                     return match;
