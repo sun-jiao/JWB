@@ -51,6 +51,12 @@ JWB.messages.zh_hans = {
     'tip-import-setup': '上传在本地计算机上储存的设置文件（.json 文件）。',
     'update-setup': '刷新',
     'tip-update-setup': '刷新您在 /$1 页面中存储的设置',
+    'label-limits': '限制',
+    'tip-time-limit': '任何正则表达式的最大匹配时间，此时限对于替换规则和跳过规则均生效。',
+    'time-limit': '正则运行时限',
+    'tip-diff-size-limit': '允许添加/删除的最大字符数，设为0即可取消限制。此参数可被用于防止机器人意外地添加/删除大量内容的健全性测试。',
+    'diff-size-limit': '差异大小限制',
+    'size-limit-exceeded': '您所做的更改（$1 字符）超过了允许添加/删除的最大字符数，设为0即可取消限制。',
 
     // Tab 2
     'edit-summary': '编辑摘要:',
