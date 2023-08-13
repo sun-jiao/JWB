@@ -28,7 +28,7 @@
  * @version 4.4.0
  * @author Joeytje50
  * </nowiki>
- */
+ **/
 
 window.JWBdeadman = false; // ADMINS: in case of fire, set this variable to true to disable this entire tool for all users
 
@@ -188,7 +188,7 @@ window.JWB = {}; //The main global object for the script.
         }
 
         JWB.username = response.query.userinfo.name; //preventing any "hacks" that change wgUserName or mw.config.wgUserName
-        const groups = response.query.userinfo.groups;
+        const groups = reponse.query.userinfo.groups;
         const page = response.query.pages[response.query.pageids[0]];
         let users = [];
         let bots = [];
