@@ -503,7 +503,7 @@ JWB.api.submit = function (page) {
         title: JWB.page.name,
         summary: summary,
         action: 'edit',
-        //tags: 'JWB',
+        tags: 'JWB',
         basetimestamp: JWB.page.revisions ? JWB.page.revisions[0].timestamp : '',
         token: JWB.page.token,
         text: newval,
