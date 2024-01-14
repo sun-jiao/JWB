@@ -188,7 +188,7 @@ window.JWB = {}; //The main global object for the script.
         }
 
         JWB.username = response.query.userinfo.name; //preventing any "hacks" that change wgUserName or mw.config.wgUserName
-        const groups = reponse.query.userinfo.groups;
+        const groups = response.query.userinfo.groups;
         const page = response.query.pages[response.query.pageids[0]];
         let users = [];
         let bots = [];
