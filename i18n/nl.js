@@ -115,6 +115,7 @@ JWB.messages.nl = {
     // Tab 4
     'editbutton-move': 'Hernoem',
     'editbutton-delete': 'Verwijder',
+    'editbutton-undelete': 'Terugplaatsen',
     'editbutton-protect': 'Beveilig',
     'move-header': 'Hernoemopties',
     'move-redir-suppress': 'Doorverwijzing onderdrukken',
@@ -122,6 +123,8 @@ JWB.messages.nl = {
     'move-talk-page': 'overleg',
     'move-subpage': 'subpagina\'s',
     'move-new-name': 'Nieuwe naam:',
+    'delete-header': 'Verwijderopties',
+    'delete-talk': '(Ont)verwijder ook overlegpagina',
     'protect-header': 'Beschermingsopties',
     'protect-edit': 'Bewerken:',
     'protect-move': 'Hernoemen:',

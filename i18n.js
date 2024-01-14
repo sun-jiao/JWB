@@ -32,7 +32,7 @@ if (!window.JWB || JWB === false) {
         JWB.imports.i18n[lang] = '//www.sunjiao.net/JWB/i18n/' + file + '.js';
     }
 })([ // List all languages here:
-    'nl', 'gl', 'ru', 'uk', 'be', 'he', 'it', 'fa', 'zh_hans', 'zh_hant', 'vi',
+    'nl', 'gl', 'ru', 'uk', 'be', 'he', 'it', 'fa', 'zh_hans', 'zh_hant',
     'zh=zh_hans', 'zh_cn=zh_hans', 'zh_my=zh_hans', 'zh_sg=zh_hans', // zh_hans redirects
     'zh_hk=zh_hant', 'zh_mo=zh_hant', 'zh_tw=zh_hant', // zh_hant redirects
 ]);
@@ -150,6 +150,7 @@ JWB.messages.en = {
     // Tab 4
     'editbutton-move': 'Move',
     'editbutton-delete': 'Delete',
+    'editbutton-undelete': 'Undelete',
     'editbutton-protect': 'Protect',
     'move-header': 'Move options',
     'move-redir-suppress': 'Suppress redirects',
@@ -157,6 +158,8 @@ JWB.messages.en = {
     'move-talk-page': 'talk page',
     'move-subpage': 'subpages',
     'move-new-name': 'New pagename:',
+    'delete-header': 'Delete options',
+    'delete-talk': 'Also (un)delete talk page',
     'protect-header': 'Protect options',
     'protect-edit': 'Edit:',
     'protect-move': 'Move:',

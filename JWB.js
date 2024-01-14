@@ -494,7 +494,7 @@ JWB.api.submit = function (page) {
     }
     let newval = $('#editBoxArea').val();
     let diffsize = newval.length - JWB.page.content.length;
-    if ($('#sizelimit').val() > 0 && Math.abs(diffsize) > parseInt($('#sizelimit').val())) {
+    if ($('#sizelimit').val() != 0 && Math.abs(diffsize) > parseInt($('#sizelimit').val())) {
         alert(JWB.msg('size-limit-exceeded', diffsize > 0 ? '+' + diffsize : diffsize));
         JWB.status('done', true);
         return;
@@ -585,16 +585,19 @@ JWB.api.move = function () {
 };
 JWB.api.del = function () {
     if (JWB.isStopped) return; // prevent new API calls when stopped
-    JWB.status(($('#deletePage').is('.undelete') ? 'un' : '') + 'delete');
+    const del_action = (!JWB.page.exists ? 'un' : '') + 'delete';
+    JWB.status(del_action);
     let summary = $('#summary').val();
     if ($('#summary').parent('label').hasClass('viaJWB')) summary += JWB.summarySuffix;
-    JWB.api.call({
-        action: (!JWB.page.exists ? 'un' : '') + 'delete',
+    const data = {
+        action: del_action,
         title: JWB.page.name,
         token: JWB.page.token,
         reason: summary
-    }, function (response) {
-        JWB.log((!JWB.page.exists ? 'un' : '') + 'delete', (response['delete'] || response.undelete).title);
+    };
+    if ($('#deleteTalk').prop('checked')) data[del_action + 'talk'] = true;
+    JWB.api.call(data, function (response) {
+        JWB.log(del_action, (response['delete'] || response.undelete).title);
         JWB.status('done', true);
         JWB.next(response.undelete && response.undelete.title);
     });
@@ -672,6 +675,7 @@ JWB.pl.stop = function () {
 };
 
 JWB.pl.getNSpaces = function () {
+    var list = $('#pagelistPopup [name="namespace"]')[0];
     return $('#pagelistPopup [name="namespace"]').val().join('|'); //.val() returns an array of selected options.
 };
 
@@ -1009,7 +1013,7 @@ JWB.setup.download = function () {
     if ($.trim(name) === '') name = 'default';
     JWB.setup.save(name);
     JWB.status('setup-dload');
-    const url = 'data:application/json;base64,' + btoa(decodeURIComponent(encodeURIComponent(JWB.setup.getObj())));
+    const url = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JWB.setup.getObj())));
     let elem = $('#download-anchor')[0];
     if (HTMLAnchorElement.prototype.hasOwnProperty('download')) { //use download attribute when possible, for its ability to specify a filename
         elem.href = url;
@@ -1633,9 +1637,8 @@ JWB.fn.clearAllTimeouts = function () {
 
 //Filter an array to only contain unique values.
 JWB.fn.uniques = function (arr) {
-    let a = [];
-    let i = 0;
-    const l = arr.length;
+    const a = [];
+    let i = 0, l = arr.length;
     for (; i < l; i++) {
         if (a.indexOf(arr[i]) === -1 && arr[i] !== '') {
             a.push(arr[i]);
@@ -1647,8 +1650,8 @@ JWB.fn.uniques = function (arr) {
 // code taken directly from [[Template:Bots]] and changed structurally (not functionally) for readability. The user in this case is "JWB" to deny this script.
 // the user parameter is still kept as an optional parameter to maintain functionality as given on that template page.
 JWB.fn.allowBots = function (text, user = "JWB") {
-    const usr = user.replace(/([()*+?.\-:!=\/^$])/g, "\\$1");
-    if (!new RegExp("\\{\\{\\s*(nobots|bots[^}]*)\\s*}}", "i").test(text))
+    var usr = user.replace(/([\(\)\*\+\?\.\-\:\!\=\/\^\$])/g, "\\$1");
+    if (!new RegExp("\\{\\{\\s*(nobots|bots[^}]*)\\s*\\}\\}", "i").test(text))
         return true;
     if (new RegExp("\\{\\{\\s*bots\\s*\\|\\s*deny\\s*=\\s*([^}]*,\\s*)*" + usr + "\\s*(?=[,\\}])[^}]*\\s*\\}\\}", "i").test(text))
         return false;
@@ -1905,8 +1908,8 @@ JWB.init = function () {
             JWB.msg('label-RETF') +
             '</a>') +
         '</label>' +
-        ' <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Gnome-view-refresh.svg/20px-Gnome-view-refresh.svg.png" ' +
-        'id="refreshRETF" title="' + JWB.msg('tip-refresh-RETF') + '" alt="">' +
+        ' <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Gnome-view-refresh.svg/20px-Gnome-view-refresh.svg.png"' +
+        'id="refreshRETF" title="' + JWB.msg('tip-refresh-RETF') + '">' +
         '<br/>' +
         '<button id="skipRETF" title="' + JWB.msg('tip-skip-RETF') + '" disabled>' + JWB.msg('skip-RETF') + '</button>'
     );
@@ -1957,6 +1960,10 @@ JWB.init = function () {
         '<label>' + JWB.msg('move-new-name') + ' <input type="text" id="moveTo"></label>' +
         '</fieldset>' +
         '<fieldset>' +
+        '<legend>' + JWB.msg('delete-header') + '</legend>' +
+        '<label><input type="checkbox" id="deleteTalk"> ' + JWB.msg('delete-talk') + '</label>' +
+        '</fieldset>' +
+        '<fieldset>' +
         '<legend>' + JWB.msg('protect-header') + '</legend>' +
         JWB.msg('protect-edit') +
         ' <select id="editProt">' +
@@ -1984,7 +1991,7 @@ JWB.init = function () {
         '<label>' + JWB.msg('protect-expiry') + ' <input type="text" id="protectExpiry"/></label>' +
         '</fieldset>' +
         '<button id="movePage" disabled accesskey="m">' + JWB.msg('editbutton-move') + '</button> ' +
-        '<button id="deletePage" disabled accesskey="x">' + JWB.msg('editbutton-delete') + '</button> ' +
+        '<button id="deletePage" class="delete" disabled accesskey="x">' + JWB.msg('editbutton-delete') + '</button> ' +
         '<button id="protectPage" disabled accesskey="z">' + JWB.msg('editbutton-protect') + '</button> ' +
         '<button id="skipPage" disabled title="[' + JWB.tooltip + 'n]">' + JWB.msg('editbutton-skip') + '</button>'
     );
